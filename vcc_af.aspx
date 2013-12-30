@@ -59,16 +59,19 @@
 				$('#txtTotal').css('background-color', 'rgb(237,237,238)').css('color', 'green');
 				var t_mount = 0, t_price = 0, t_money = 0, t_moneyus = 0, t_weight = 0, t_total = 0, t_tax = 0;
 				var t_mounts = 0, t_prices = 0, t_moneys = 0, t_weights = 0;
-				var t_unit = '';
-				var t_float = q_float('txtFloata');
+				var t_radius = 0;
+				
 				var t_tranmoney = dec($('#txtTranmoney').val());
 				for (var j = 0; j < q_bbsCount; j++) {
 					t_prices = q_float('txtPrice_' + j);
 					t_mounts = q_float('txtMount_' + j);
-					t_moneys = q_mul(t_prices, t_mounts);
+					t_radius = q_float('txtRadius_' + j);
+					t_moneys = q_mul(q_mul(t_prices, t_mounts),t_radius);
 					t_mount = q_add(t_mount, t_mounts);
 					t_money = q_add(t_money, t_moneys);
 					$('#txtTotal_' + j).val(FormatNumber(t_moneys));
+					
+				
 				}
 				t_total = t_money;
 				t_tax = 0;
@@ -246,6 +249,11 @@
 				if ($.trim($('#txtNick').val()).length == 0 && $.trim($('#txtComp').val()).length > 0)
 					$('#txtNick').val($.trim($('#txtComp').val()).substring(0, 4));
 				sum();
+				
+				if(q_cur == 1)
+                    $('#txtWorker').val(r_name);
+                else
+                    $('#txtWorker2').val(r_name);
 				var t_noa = trim($('#txtNoa').val());
 				var t_date = trim($('#txtDatea').val());
 				if (t_noa.length == 0 || t_noa == "AUTO")
@@ -321,7 +329,7 @@
 				_btnOk(key_value, bbmKey[0], bbsKey[1], '', 2);
 			}
 			function bbsSave(as) {
-				if (!as['product'] && !as['uno'] && parseFloat(as['mount'].length == 0 ? "0" : as['mount']) == 0 && parseFloat(as['weight'].length == 0 ? "0" : as['weight']) == 0) {
+				if (!as['product'] && parseFloat(as['mount'].length == 0 ? "0" : as['mount']) == 0 ) {
 					as[bbsKey[1]] = '';
 					return;
 				}
@@ -416,9 +424,9 @@
 				}
 			}
 			function tipInit() {
-				tip($('#lblOrdeno'), '<a style="color:darkblue;font-size:16px;font-weight:bold;width:300px;display:block;">點擊【' + q_getMsg('lblOrdeno') + '】匯入訂單</a>', 0, -15);
-				tip($('#btnImportVcce'), '<a style="color:darkblue;font-size:16px;font-weight:bold;width:300px;display:block;">↓匯入派車單資料。</a>', -20, -15);
-				tip($('#btnVcceImport'), '<a style="color:darkblue;font-size:16px;font-weight:bold;width:350px;display:block;">↑匯入裁剪、製管資料，需有訂單(未結案)。</a>', -20, 20);
+			//	tip($('#lblOrdeno'), '<a style="color:darkblue;font-size:16px;font-weight:bold;width:300px;display:block;">點擊【' + q_getMsg('lblOrdeno') + '】匯入訂單</a>', 0, -15);
+			//	tip($('#btnImportVcce'), '<a style="color:darkblue;font-size:16px;font-weight:bold;width:300px;display:block;">↓匯入派車單資料。</a>', -20, -15);
+			//	tip($('#btnVcceImport'), '<a style="color:darkblue;font-size:16px;font-weight:bold;width:350px;display:block;">↑匯入裁剪、製管資料，需有訂單(未結案)。</a>', -20, 20);
 			}
 			function tip(obj, msg, x, y) {
 				x = x == undefined ? 0 : x;
@@ -546,7 +554,7 @@
                 margin: -1px;
             }
             .dbbs {
-                width: 1740px;
+                width: 1000px;
             }
             .tbbs a {
                 font-size: medium;
@@ -722,10 +730,10 @@
                     <input class="btn"  id="btnPlus" type="button" value='+' style="font-weight: bold;"  />
                     </td>
                     <td align="center" style="width:20px;"></td>
-                    <td align="center" style="width:80px;"><a id='lblStore_af'> </a></td>
-                    <td align="center" style="width:120px;"><a id='lblProduct_af'> </a></td>
+                    <td align="center" style="width:80px;"><a id='lblStores_af'> </a></td>
+                    <td align="center" style="width:220px;"><a id='lblProducts_af'> </a></td>
                     <td align="center" style="width:30px;"><a id='lblUnit'> </a></td>
-                    <td align="center" style="width:80px;"><a id='lblMount_af'> </a></td>
+                    <td align="center" style="width:80px;"><a id='lblMounts_af'> </a></td>
                     <td align="center" style="width:80px;"><a id='lblPrices_af'> </a></td>
                     <td align="center" style="width:80px;"><a id='lblRadius_af'></a></td>
                     <td align="center" style="width:80px;"><a id='lblTotals_af'></td>
@@ -737,17 +745,11 @@
                         <input id="txtNoq.*" type="text" style="display: none;" />
                     </td>
                     <td><a id="lblNo.*" style="font-weight: bold;text-align: center;display: block;"> </a></td>
-                    <td>
-                        <input class="btn"  id="btnStoreno.*" type="button" value='.' style=" font-weight: bold;width:15px;float:left;" />
-                        <input  id="txtStoreno.*" type="text" style="width:55px;" />
-                        <span style="display:block;width:15px;"> </span>
-                        <input type="text" id="txtStore.*" style="width:55px;" />
-                    </td>
+                    <td><input  id="txtStoreno.*" type="text" style="width:95%;" /></td>
                     <td>
                         <input class="btn"  id="btnProductno.*" type="button" value='.' style=" font-weight: bold;width:15px;float:left;" />
-                        <input  id="txtProductno.*" type="text" style="width:95px;" />
-                        <span style="display:block;width:15px;"> </span>
-                        <input type="text" id="txtProduct.*" style="width:95px;" />
+                        <input  id="txtProductno.*" type="text" style="width:95px;float: left;" />
+                        <input type="text" id="txtProduct.*" style="width:100px;float: left;" />
                     </td>
                     <td>
                     <input id="txtUnit.*" type="text" class="txt" style="width:95%;text-align: center;"/>
