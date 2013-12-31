@@ -33,7 +33,8 @@
             brwNowPage = 0;
             brwKey = 'noa';
             q_desc = 1;
-            aPop = new Array();
+            aPop = new Array(['txtCustno', 'lblCust_af', 'cust', 'noa,comp,nick', 'txtCustno,txtCust,txtCustnick', 'cust_b.aspx']
+                , ['txtProductno_', 'btnProductno_', 'ucc', 'noa,product,unit', 'txtProductno_,txtProduct_,txtUnit_', 'ucc_b.aspx']);
             brwCount2 = 5;
             $(document).ready(function() {
                 bbmKey = ['noa'];
@@ -174,7 +175,6 @@
                     Unlock(1);
                     return;
                 }
-                
                 if (q_cur == 1)
                     $('#txtWorker').val(r_name);
                 else
