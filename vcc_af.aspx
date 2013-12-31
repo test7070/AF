@@ -201,18 +201,11 @@
 			function q_gtPost(t_name) {/// 資料下載後 ...
 				switch (t_name) {
 				    case 'getCustAddr':
-				        var as = _q_appendData("cust", "", true);
+				        var as = _q_appendData("custaddr", "", true);
 				        $('#combAddr').html('');
 				        if (as[0] != undefined) {
-				            var t_addr = '';
-				            if($.trim(as[0]['addr_fact']).length>0)
-				                $('#combAddr').append('<option value="'+$.trim(as[0]['zip_fact'])+'">'+$.trim(as[0]['addr_fact'])+'</option>');
-				            if($.trim(as[0]['addr_comp']).length>0)
-                                $('#combAddr').append('<option value="'+$.trim(as[0]['zip_comp'])+'">'+$.trim(as[0]['addr_comp'])+'</option>');
-                            if($.trim(as[0]['addr_invo']).length>0)
-                                $('#combAddr').append('<option value="'+$.trim(as[0]['zip_invo'])+'">'+$.trim(as[0]['addr_invo'])+'</option>');
-                            if($.trim(as[0]['addr_home']).length>0)
-                                $('#combAddr').append('<option value="'+$.trim(as[0]['zip_home'])+'">'+$.trim(as[0]['addr_home'])+'</option>');     
+				            for(var i=0;i<as.length;i++)
+				                $('#combAddr').append('<option value="'+$.trim(as[0]['post'])+'">'+$.trim(as[0]['addr'])+'</option>');
 				        }
 				        break;
 					case 'getVccatax':
@@ -350,7 +343,7 @@
 					return;
 				_btnModi();
 				if($.trim($('#txtCustno').val()).length>0){
-                    q_gt('cust', "where=^^ noa='"+$.trim($('#txtCustno').val())+"'^^", 0, 0, 0, 'getCustAddr');
+                    q_gt('custaddr', "where=^^ noa='"+$.trim($('#txtCustno').val())+"'^^", 0, 0, 0, 'getCustAddr');
                 }
 				$('#txtDatea').focus();
 				sum();
@@ -379,7 +372,7 @@
 				switch (s1) {		    
 				    case 'txtCustno':
 				        if((q_cur==1 || q_cur==2) && $.trim($('#txtCustno').val()).length>0){
-                            q_gt('cust', "where=^^ noa='"+$.trim($('#txtCustno').val())+"'^^", 0, 0, 0, 'getCustAddr');
+                            q_gt('custaddr', "where=^^ noa='"+$.trim($('#txtCustno').val())+"'^^", 0, 0, 0, 'getCustAddr');
                         }
                         break;
 					default:
