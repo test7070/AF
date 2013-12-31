@@ -14,6 +14,8 @@
         <script src="css/jquery/ui/jquery.ui.widget.js"></script>
         <script src="css/jquery/ui/jquery.ui.datepicker_tw.js"></script>
         <script type="text/javascript">
+			
+			
 			this.errorHandler = null;
 			function onPageError(error) {
 				alert("An error occurred:\r\n" + error.Message);
@@ -21,10 +23,10 @@
 			q_desc = 1;
 			q_tables = 's';
 			var q_name = "vcc";
-			var q_readonly = [];
+			var q_readonly = ['txtNoa','txtWorker','txtWorker2','txtAccno'];
 			var q_readonlys = [];
-			var bbmNum = [];
-			var bbsNum = [];
+			var bbmNum = [['txtMoney',10,0,1],['txtTax',10,0,1],['txtTotal',10,0,1]];
+			var bbsNum = [['txtMount',10,0,1],['txtPrice',10,0,1],['txtRate',10,2,1],['txtTotal',10,0,1]];
 			var bbmMask = [];
 			var bbsMask = [];
 			q_sqlCount = 6;
@@ -32,7 +34,10 @@
 			brwList = [];
 			brwNowPage = 0;
 			brwKey = 'noa';
-			aPop = new Array(['txtCustno', 'lblCust', 'cust', 'noa,comp,nick,tel,zip_fact,addr_fact,paytype', 'txtCustno,txtComp,txtNick,txtTel,txtPost,txtAddr,txtPaytype', 'cust_b.aspx'], ['txtAddr', '', 'view_road', 'memo,zipcode', '0txtAddr,txtPost', 'road_b.aspx']);
+			aPop = new Array(['txtCustno', 'lblCust', 'cust', 'noa,comp,nick,tel,zip_fact,addr_fact,paytype', 'txtCustno,txtComp,txtNick,txtTel,txtPost,txtAddr,txtPaytype', 'cust_b.aspx']
+			, ['txtAddr', '', 'view_road', 'memo,zipcode', '0txtAddr,txtPost', 'road_b.aspx']
+			, ['txtAddr2', '', 'view_road', 'memo,zipcode', '0txtAddr2,txtPost2', 'road_b.aspx']
+			, ['txtProductno_', 'btnProductno_', 'ucc', 'noa,product,unit', 'txtProductno_,txtProduct_,txtUnit_', 'ucc_b.aspx']);
 			brwCount2 = 12;
 			$(document).ready(function() {
 				bbmKey = ['noa'];
@@ -50,6 +55,7 @@
 			function sum() {
 				if (!(q_cur == 1 || q_cur == 2))
 					return;
+				var vccrate = 4.00;
 				$('#cmbTaxtype').val((($('#cmbTaxtype').val()) ? $('#cmbTaxtype').val() : '1'));
 				$('#txtMoney').attr('readonly', true);
 				$('#txtTax').attr('readonly', true);
@@ -63,15 +69,15 @@
 				
 				var t_tranmoney = dec($('#txtTranmoney').val());
 				for (var j = 0; j < q_bbsCount; j++) {
+				    if(q_float('txtRadius_' + j)==0 && $.trim($('#txtProduct_'+j).val()).length>0) 
+				        $('#txtRadius_' + j).val(vccrate);
 					t_prices = q_float('txtPrice_' + j);
 					t_mounts = q_float('txtMount_' + j);
-					t_radius = q_float('txtRadius_' + j);
-					t_moneys = q_mul(q_mul(t_prices, t_mounts),t_radius);
+					t_radius = q_div(q_float('txtRadius_' + j),100);
+					t_moneys = Math.round(q_mul(q_mul(t_prices, t_mounts),t_radius));
 					t_mount = q_add(t_mount, t_mounts);
 					t_money = q_add(t_money, t_moneys);
 					$('#txtTotal_' + j).val(FormatNumber(t_moneys));
-					
-				
 				}
 				t_total = t_money;
 				t_tax = 0;
@@ -121,6 +127,8 @@
 				q_mask(bbmMask);
 				q_cmbParse("cmbTypea", q_getPara('vcc.typea'));
 				q_cmbParse("cmbTaxtype", q_getPara('sys.taxtype'));
+				q_cmbParse("cmbTrantype", q_getPara('sys.tran'));
+				q_cmbParse("combPaytype", q_getPara('vcc.paytype'));
 				//=======================================================
 				$("#cmbTypea").focus(function() {
 					var len = $(this).children().length > 0 ? $(this).children().length : 1;
@@ -152,30 +160,36 @@
 				$('#txtTax').change(function() {
 					sum();
 				});
-				$('#txtAddr').change(function() {
-					var t_custno = trim($(this).val());
-					if (!emp(t_custno)) {
-						focus_addr = $(this).attr('id');
-						var t_where = "where=^^ noa='" + t_custno + "' ^^";
-						q_gt('cust', t_where, 0, 0, 0, "");
-					}
-				});
-				$('#txtAddr2').change(function() {
-					var t_custno = trim($(this).val());
-					if (!emp(t_custno)) {
-						focus_addr = $(this).attr('id');
-						var t_where = "where=^^ noa='" + t_custno + "' ^^";
-						q_gt('cust', t_where, 0, 0, 0, "");
-					}
-				});
 				$('#lblInvono').click(function() {
 					if ($('#txtInvono').val().length > 0)
 						q_pop('txtInvono', "vcca.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";noa='" + $('#txtInvono').val() + "';" + r_accy, 'vcca', 'noa', 'datea', "95%", "95%px", q_getMsg('lblInvono'), true);
+				});	
+				$('#combAddr').change(function(e){
+				    $('#txtPost2').val($(this).val());
+				    $('#txtAddr2').val($(this).find(":selected").text());
 				});
+				$("#combPaytype").change(function(e) {
+                    if (q_cur == 1 || q_cur == 2)
+                        $('#txtPaytype').val($('#combPaytype').find(":selected").text());
+                });
+                $("#txtPaytype").focus(function(e) {
+                    var n = $(this).val().match(/[0-9]+/g);
+                    var input = document.getElementById("txtPaytype");
+                    if ( typeof (input.selectionStart) != 'undefined' && n != null) {
+                        input.selectionStart = $(this).val().indexOf(n);
+                        input.selectionEnd = $(this).val().indexOf(n) + (n + "").length;
+                    }
+                }).click(function(e) {
+                    var n = $(this).val().match(/[0-9]+/g);
+                    var input = document.getElementById("txtPaytype");
+                    if ( typeof (input.selectionStart) != 'undefined' && n != null) {
+                        input.selectionStart = $(this).val().indexOf(n);
+                        input.selectionEnd = $(this).val().indexOf(n) + (n + "").length;
+                    }
+                });
 			}
 			function q_boxClose(s2) {///   q_boxClose 2/4
-				var
-				ret;
+				var ret;
 				switch (b_pop) {
 					case q_name + '_s':
 						q_boxClose2(s2);
@@ -186,6 +200,21 @@
 			}
 			function q_gtPost(t_name) {/// 資料下載後 ...
 				switch (t_name) {
+				    case 'getCustAddr':
+				        var as = _q_appendData("cust", "", true);
+				        $('#combAddr').html('');
+				        if (as[0] != undefined) {
+				            var t_addr = '';
+				            if($.trim(as[0]['addr_fact']).length>0)
+				                $('#combAddr').append('<option value="'+$.trim(as[0]['zip_fact'])+'">'+$.trim(as[0]['addr_fact'])+'</option>');
+				            if($.trim(as[0]['addr_comp']).length>0)
+                                $('#combAddr').append('<option value="'+$.trim(as[0]['zip_comp'])+'">'+$.trim(as[0]['addr_comp'])+'</option>');
+                            if($.trim(as[0]['addr_invo']).length>0)
+                                $('#combAddr').append('<option value="'+$.trim(as[0]['zip_invo'])+'">'+$.trim(as[0]['addr_invo'])+'</option>');
+                            if($.trim(as[0]['addr_home']).length>0)
+                                $('#combAddr').append('<option value="'+$.trim(as[0]['zip_home'])+'">'+$.trim(as[0]['addr_home'])+'</option>');     
+				        }
+				        break;
 					case 'getVccatax':
 						var as = _q_appendData("vcca", "", true);
 						if (as[0] != undefined) {
@@ -286,7 +315,7 @@
 			function _btnSeek() {
 				if (q_cur > 0 && q_cur < 4)// 1-3
 					return;
-				q_box('vccst_s.aspx', q_name + '_s', "500px", "530px", q_getMsg("popSeek"));
+				q_box('vcc_af_s.aspx', q_name + '_s', "500px", "530px", q_getMsg("popSeek"));
 			}
 			function bbsAssign() {/// 表身運算式
 				for (var j = 0; j < q_bbsCount; j++) {
@@ -298,6 +327,9 @@
 						$('#txtMount_' + j).focusout(function() {
 							sum();
 						});
+						$('#txtRadius_' + j).focusout(function() {
+                            sum();
+                        });
 						$('#txtTotal_' + j).focusout(function() {
 							sum();
 						});
@@ -317,11 +349,14 @@
 				if (emp($('#txtNoa').val()))
 					return;
 				_btnModi();
+				if($.trim($('#txtCustno').val()).length>0){
+                    q_gt('cust', "where=^^ noa='"+$.trim($('#txtCustno').val())+"'^^", 0, 0, 0, 'getCustAddr');
+                }
 				$('#txtDatea').focus();
 				sum();
 			}
 			function btnPrint() {
-				q_box("z_vccstp.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";noa=" + $('#txtNoa').val() + ";" + r_accy, 'z_vccstp', "95%", "95%", q_getMsg('popPrint'));
+				q_box("z_vcc_afp.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";noa=" + $('#txtNoa').val() + ";" + r_accy, 'z_vccstp', "95%", "95%", q_getMsg('popPrint'));
 			}
 			function wrServer(key_value) {
 				var i;
@@ -329,7 +364,7 @@
 				_btnOk(key_value, bbmKey[0], bbsKey[1], '', 2);
 			}
 			function bbsSave(as) {
-				if (!as['product'] && parseFloat(as['mount'].length == 0 ? "0" : as['mount']) == 0 ) {
+				if (!as['product']) {
 					as[bbsKey[1]] = '';
 					return;
 				}
@@ -341,13 +376,26 @@
 			}
 			var x_bseq = 0;
 			function q_popPost(s1) {
-				switch (s1) {
+				switch (s1) {		    
+				    case 'txtCustno':
+				        if((q_cur==1 || q_cur==2) && $.trim($('#txtCustno').val()).length>0){
+                            q_gt('cust', "where=^^ noa='"+$.trim($('#txtCustno').val())+"'^^", 0, 0, 0, 'getCustAddr');
+                        }
+                        break;
 					default:
 						break;
 				}
 			}
 			function readonly(t_para, empty) {
 				_readonly(t_para, empty);
+				if(q_cur==1 || q_cur==2){
+				    $('#combAddr').removeAttr('disabled');
+				    $('#combPaytype').removeAttr('disabled');
+				}
+				else{
+				    $('#combAddr').attr('disabled','disabled');
+				    $('#combPaytype').attr('disabled','disabled');
+				}
 			}
 			function btnMinus(id) {
 				_btnMinus(id);
@@ -664,7 +712,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><span> </span><a id='lblAddr' class="lbl"> </a></td>
+                        <td><span> </span><a id='lblAddr_af' class="lbl"> </a></td>
                         <td colspan="4" >
                         <input id="txtPost"  type="text" style="float:left; width:70px;"/>
                         <input id="txtAddr"  type="text" style="float:left; width:369px;"/>
@@ -677,7 +725,7 @@
                         <td colspan="4" >
                         <input id="txtPost2"  type="text" style="float:left; width:70px;"/>
                         <input id="txtAddr2"  type="text" style="float:left; width:347px;"/>
-                        <select id="combAddr" style="width: 20px" onchange='combAddr_chg()'></select></td>
+                        <select id="combAddr" style="width: 20px"> </select></td>
                         <td><span> </span><a id='lblPaytype' class="lbl"> </a></td>
                         <td colspan="2">
                         <input id="txtPaytype" type="text" style="float:left; width:87%;"/>
