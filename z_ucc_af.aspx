@@ -47,6 +47,9 @@
 					},{
 						type : '6', //[8]
 						name : 'xstoreno'
+					},{
+						type : '6', //[9]
+						name : 'xcountdatea'
 					}]
 				});
 				q_popAssign();
@@ -54,6 +57,8 @@
 				$('#txtXdate1').datepicker();
 				$('#txtXdate2').mask('999/99/99');
 				$('#txtXdate2').datepicker();
+				$('#txtXcountdatea').mask('999/99/99');
+				$('#txtXcountdatea').datepicker();
 
 				var t_date, t_year, t_month, t_day;
 				t_date = new Date();
@@ -65,6 +70,7 @@
 				t_day = t_date.getUTCDate();
 				t_day = t_day > 9 ? t_day + '' : '0' + t_day;
 				$('#txtXdate1').val(t_year + '/' + t_month + '/' + t_day);
+				$('#txtXcountdatea').val(t_year + '/' + t_month + '/' + t_day);
 
 				t_date = new Date();
 				t_date.setDate(35);
