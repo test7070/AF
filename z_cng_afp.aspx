@@ -20,11 +20,11 @@
 			}
 			$(document).ready(function() {
 				q_getId();
-				q_gf('', 'z_cng_af');
+				q_gf('', 'z_cng_afp');
 			});
 			function q_gfPost() {
 				$('#q_report').q_report({
-					fileName : 'z_cng_af', options : [{
+					fileName : 'z_cng_afp', options : [{
 						type : '0', name : 'accy', value : r_accy
 					}, {
 						type : '1', name : 'xnoa'
