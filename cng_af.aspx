@@ -483,8 +483,8 @@
                     <tr>
                         <td><span> </span><a id="lblStoreno" class="lbl"> </a></td>
                         <td><input id="txtStoreno" type="text" class="txt c1"/></td>
-                        <td><span> </span><a id="lblStorinno" class="lbl"> </a></td>
-                        <td><input id="txtStorinno" type="text" class="txt c1"/></td>
+                        <td><span> </span><a id="lblStoreinno" class="lbl"> </a></td>
+                        <td><input id="txtStoreinno" type="text" class="txt c1"/></td>
                     </tr>
                     <tr>
                         <td><span> </span><a id="lblCust_af" class="lbl btn"> </a></td>
