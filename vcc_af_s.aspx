@@ -14,7 +14,8 @@
         <script src="css/jquery/ui/jquery.ui.datepicker_tw.js"> </script>
         <script type="text/javascript">
             var q_name = "vcc_af_s";
-            aPop = new Array(['txtCustno', 'lblCustno', 'cust', 'noa,nick', 'txtCustno', 'cust_b.aspx']);
+            aPop = new Array(['txtCustno', 'lblCustno', 'cust', 'noa,nick', 'txtCustno', 'cust_b.aspx']
+                , ['txtProductno', 'lblProductno', 'ucc', 'noa,product', 'txtProductno', 'ucc_b.aspx']);
             $(document).ready(function() {
                 main();
             });
@@ -43,6 +44,8 @@
                 t_bdate = $('#txtBdate').val();
                 t_edate = $('#txtEdate').val();
                 t_invono = $('#txtInvono').val();
+                t_productno = $('#txtProductno').val();
+                t_storeno = $('#txtStoreno').val();
 
                 var t_where = " 1=1 " 
                 + q_sqlPara2("typea", t_typea)
@@ -52,6 +55,10 @@
                 + q_sqlPara2("invono", t_invono);
                 if (t_comp.length>0)
                     t_where += " and charindex('" + t_comp + "',comp)>0";
+                if(t_productno.length>0)
+                    t_where += " and exists(select noa from vccs"+r_accy+" where vccs"+r_accy+".noa=vcc"+r_accy+".noa and vccs"+r_accy+".productno='"+t_productno+"')";
+                if(t_storeno.length>0)
+                    t_where += " and exists(select noa from vccs"+r_accy+" where vccs"+r_accy+".noa=vcc"+r_accy+".noa and vccs"+r_accy+".storeno='"+t_storeno+"')";
                 t_where = ' where=^^' + t_where + '^^ ';
                 return t_where;
             }
@@ -106,6 +113,18 @@
                     <td class='seek'  style="width:20%;"><a id='lblInvono'> </a></td>
                     <td>
                     <input class="txt" id="txtInvono" type="text" style="width:215px; font-size:medium;" />
+                    </td>
+                </tr>
+                <tr class='seek_tr'>
+                    <td class='seek'  style="width:20%;"><a id='lblProductno'> </a></td>
+                    <td>
+                    <input class="txt" id="txtProductno" type="text" style="width:215px; font-size:medium;" />
+                    </td>
+                </tr>
+                <tr class='seek_tr'>
+                    <td class='seek'  style="width:20%;"><a id='lblStoreno'> </a></td>
+                    <td>
+                    <input class="txt" id="txtStoreno" type="text" style="width:215px; font-size:medium;" />
                     </td>
                 </tr>
             </table>
