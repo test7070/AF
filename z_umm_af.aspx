@@ -50,6 +50,7 @@
                 $('#txtXdate2').datepicker();
                 $('#txtXmon1').mask('999/99');
                 $('#txtXmon2').mask('999/99');
+                $('#chkXoption01').children('input').attr('checked', 'checked');
 
                 var t_date, t_year, t_month, t_day;
                 t_date = new Date();
