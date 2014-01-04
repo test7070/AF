@@ -34,9 +34,9 @@
 			brwList = [];
 			brwNowPage = 0;
 			brwKey = 'noa';
-			aPop = new Array(['txtCustno', 'lblCust', 'cust', 'noa,comp,nick,tel,zip_fact,addr_fact,paytype', 'txtCustno,txtComp,txtNick,txtTel,txtPost,txtAddr,txtPaytype', 'cust_b.aspx']
-			, ['txtAddr', '', 'view_road', 'memo,zipcode', '0txtAddr,txtPost', 'road_b.aspx']
-			, ['txtAddr2', '', 'view_road', 'memo,zipcode', '0txtAddr2,txtPost2', 'road_b.aspx']
+			aPop = new Array(['txtCustno', 'lblCust', 'cust', 'noa,comp,nick,paytype', 'txtCustno,txtComp,txtNick,txtPaytype', 'cust_b.aspx']
+			, ['txtAddr', '', 'view_road', 'memo,zipcode', '0txtAddr', 'road_b.aspx']
+			, ['txtPost2', 'lblAddr2_af', 'addr', 'noa,caseuse,addr,memo', 'txtPost2,txtAddr2,txtAddr,txtTel', 'addr_af_b.aspx']
 			, ['txtProductno_', 'btnProductno_', 'ucc', 'noa,product,unit', 'txtProductno_,txtProduct_,txtUnit_', 'ucc_b.aspx']);
 			brwCount2 = 10;
 			$(document).ready(function() {
@@ -698,27 +698,27 @@
                         <input id="txtOrdeno" type="text" class="txt c1" />
                         </td>
                     </tr>
+                    
+                    <tr>
+                        <td><span> </span><a id='lblAddr2_af' class="lbl btn"> </a></td>
+                        <td colspan="4" >
+                        <input id="txtPost2"  type="text" style="float:left; width:25%;"/>
+                        <input id="txtAddr2"  type="text" style="float:left; width:75%;"/>
+                        </td>
+                    </tr>
                     <tr>
                         <td><span> </span><a id='lblTel' class="lbl"> </a></td>
                         <td colspan="4">
                         <input id="txtTel"  type="text"  class="txt c1"/>
                         </td>
+                         <td><span> </span><a id='lblTrantype' class="lbl"> </a></td>
+                        <td colspan="2"><select id="cmbTrantype" class="txt c1" name="D1" ></select></td>
                     </tr>
                     <tr>
                         <td><span> </span><a id='lblAddr_af' class="lbl"> </a></td>
                         <td colspan="4" >
-                        <input id="txtPost"  type="text" style="float:left; width:70px;"/>
-                        <input id="txtAddr"  type="text" style="float:left; width:369px;"/>
+                        <input id="txtAddr"  type="text" class="txt c1" />
                         </td>
-                        <td><span> </span><a id='lblTrantype' class="lbl"> </a></td>
-                        <td colspan="2"><select id="cmbTrantype" class="txt c1" name="D1" ></select></td>
-                    </tr>
-                    <tr>
-                        <td><span> </span><a id='lblAddr2' class="lbl"> </a></td>
-                        <td colspan="4" >
-                        <input id="txtPost2"  type="text" style="float:left; width:70px;"/>
-                        <input id="txtAddr2"  type="text" style="float:left; width:347px;"/>
-                        <select id="combAddr" style="width: 20px"> </select></td>
                         <td><span> </span><a id='lblPaytype' class="lbl"> </a></td>
                         <td colspan="2">
                         <input id="txtPaytype" type="text" style="float:left; width:87%;"/>
