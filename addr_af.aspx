@@ -380,7 +380,8 @@
                 <table class="tview" id="tview">
                     <tr>
                         <td align="center" style="width:20px; color:black;"><a id='vewChk'> </a></td>
-                        <td align="center" style="width:100px; color:black;"><a id='vewNoa'> </a></td>
+                        <td align="center" style="width:80px; color:black;"><a id='vewNoa'> </a></td>
+                        <td align="center" style="width:40px; color:black;"><a id='vewCaseuseno_af'> </a></td>
                         <td align="center" style="width:100px; color:black;"><a id='vewCaseuse_af'> </a></td>
                         <td align="center" style="width:200px; color:black;"><a id='vewAddr_af'> </a></td>
                     </tr>
@@ -389,6 +390,7 @@
                         <input id="chkBrow.*" type="checkbox" />
                         </td>
                         <td style="text-align: center;" id='noa'>~noa</td>
+                        <td style="text-align: left;" id='caseuseno'>~caseuseno</td>
                         <td style="text-align: left;" id='caseuse'>~caseuse</td>
                         <td style="text-align: left;" id='addr'>~addr</td>
                     </tr>
@@ -425,6 +427,12 @@
                         <td><span> </span><a id='lblMemo_af' class="lbl"> </a></td>
                         <td colspan="3">
                         <input id="txtMemo" type="text" class="txt c1" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span> </span><a id="lblCaseuseno_af" class="lbl"> </a></td>
+                        <td colspan="3">
+                        <input id="txtCaseuseno" type="text" class="txt c1"/>
                         </td>
                     </tr>
                     <tr>
